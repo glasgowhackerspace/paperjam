@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Receipt Printer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body { font-family: Arial, sans-serif; background:#f4f6f8; margin:0; padding:0;}
+    .container { max-width:600px; margin:60px auto; background:#fff; padding:30px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+    h1 { margin-top:0; font-size:24px; }
+    .upload-box { margin-top:20px; padding:20px; border:2px dashed #ccc; border-radius:6px; background:#fafafa; }
+    .form-group { margin-bottom:20px; }
+    input[type="file"], textarea, input[type="range"] { width:100%; padding:8px; border-radius:4px; border:1px solid #ccc; box-sizing:border-box; }
+    textarea { resize: vertical; }
+    label { display:block; margin-bottom:6px; font-weight:normal; } /* individual labels now normal weight */
+    .checkbox-label { display:flex; align-items:center; font-weight:normal; margin-bottom:6px; }
+    .checkbox-label input { margin-right:8px; }
+    .radio-group { display:flex; gap:15px; margin-top:6px; }
+    .note { font-size:13px; color:#666; margin-top:15px; }
+    button { background:#2d72d9; color:white; border:none; padding:10px 18px; border-radius:4px; font-size:14px; cursor:pointer; }
+    button:hover { background:#1c5bbf; }
+    footer { text-align:center; margin-top:40px; font-size:12px; color:#888; }
+    /* PNG-only options box */
+    .png-options { border:1px solid #ccc; padding:15px; border-radius:6px; background:#f9f9f9; }
+    .png-options-title { font-weight:bold; margin-bottom:10px; } /* only the title bold */
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Welcome to the Receipt Printer</h1>
+<p>Use this page to print a PNG image or text to the connected receipt printer. You can also choose options for image printing.</p>
+
+<div class="upload-box">
+<form action="/cgi-bin/print_png.cgi" method="post" enctype="multipart/form-data">
+    <!-- PNG Upload -->
+    <div class="form-group">
+        <label for="receipt_image">Upload PNG (optional)</label>
+        <input type="file" id="receipt_image" name="receipt_image" accept="image/png">
+    </div>
+
+    <!-- Text Input -->
+    <div class="form-group">
+        <label for="receipt_text">Or enter text to print (optional)</label>
+        <textarea id="receipt_text" name="receipt_text" rows="6" placeholder="Type text to print"></textarea>
+    </div>
+
+    <!-- Cut paper (applies to both) -->
+    <div class="form-group">
+        <label class="checkbox-label">
+            <input type="checkbox" name="cut_paper"> Cut paper after printing
+        </label>
+    </div>
+
+    <!-- PNG Only Options -->
+    <div class="form-group png-options">
+        <div class="png-options-title">PNG Only Options</div>
+
+        <!-- Alignment -->
+        <div class="form-group">
+            <label>Horizontal Alignment</label>
+            <div class="radio-group">
+                <label><input type="radio" name="align" value="L" checked> Left</label>
+                <label><input type="radio" name="align" value="C"> Center</label>
+                <label><input type="radio" name="align" value="R"> Right</label>
+            </div>
+        </div>
+
+        <!-- Rotate -->
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="rotate"> Rotate upside down
+            </label>
+        </div>
+
+        <!-- Threshold -->
+        <div class="form-group">
+            <label for="threshold">Threshold (B/W conversion): <span id="threshold-value">128</span></label>
+            <input type="range" id="threshold" name="threshold" min="0" max="255" value="128" oninput="document.getElementById('threshold-value').textContent=this.value">
+        </div>
+
+        <!-- Photo mode -->
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="photo"> Photo mode
+            </label>
+        </div>
+    </div>
+
+    <!-- Submit button -->
+    <div class="form-group">
+        <button type="submit">Print Receipt</button>
+    </div>
+</form>
+
+<div class="note">
+You can either upload a PNG or enter text. The cut paper option applies to both. The options in the "PNG Only Options" box only apply to PNG printing.
+</div>
+</div>
+</div>
+
+<footer>Receipt Printing Service</footer>
+</body>
+</html>
